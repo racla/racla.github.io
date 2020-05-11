@@ -80,7 +80,7 @@ theme: next
 deploy:
   type: git
   repo: https://github.com/racla/racla.github.io.git
-  bracnh: master
+  branch: master
 
 search:
   path: search.xml
