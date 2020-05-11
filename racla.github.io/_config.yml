@@ -77,9 +77,10 @@ theme: next
 
 # Deployment
 ## Docs: https://hexo.io/docs/deployment.html
+# https://github.com/racla/racla.github.io.git
 deploy:
   type: git
-  repo: https://github.com/racla/racla.github.io.git
+  repo:  https://racla:WYYwyy1994@github.com/racla/racla.github.io.git
   branch: master
 
 search:
