@@ -1,0 +1,876 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="en">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="C++,Type Casting,">
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="前言本文涉及以下条款：  E116: 尽量少做转型动作 M2: 最好使用C++转型操作符 M5: 对定制的“类型转换函数”保持警觉  C++中的类型可以分为两大类：1)内置类型 和 2)自定义类型。类型转换涉及到不同内置类型之间，不同自定义类型之间以及内置类型和自定义类型之间的6种相互转换。 内置类型之间内置类型之间转换的安全性取决于类型所占空间大小。理论上来说，从所占空间更小的类型转换到所占空间">
+<meta name="keywords" content="C++,Type Casting">
+<meta property="og:type" content="article">
+<meta property="og:title" content="《Effective C++》阅读总结-类型转换">
+<meta property="og:url" content="https://racla.github.io/《Effective-C-》阅读总结-类型转换/index.html">
+<meta property="og:site_name" content="Racla&#39;s Blog">
+<meta property="og:description" content="前言本文涉及以下条款：  E116: 尽量少做转型动作 M2: 最好使用C++转型操作符 M5: 对定制的“类型转换函数”保持警觉  C++中的类型可以分为两大类：1)内置类型 和 2)自定义类型。类型转换涉及到不同内置类型之间，不同自定义类型之间以及内置类型和自定义类型之间的6种相互转换。 内置类型之间内置类型之间转换的安全性取决于类型所占空间大小。理论上来说，从所占空间更小的类型转换到所占空间">
+<meta property="og:locale" content="en">
+<meta property="og:updated_time" content="2020-05-13T10:30:02.776Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="《Effective C++》阅读总结-类型转换">
+<meta name="twitter:description" content="前言本文涉及以下条款：  E116: 尽量少做转型动作 M2: 最好使用C++转型操作符 M5: 对定制的“类型转换函数”保持警觉  C++中的类型可以分为两大类：1)内置类型 和 2)自定义类型。类型转换涉及到不同内置类型之间，不同自定义类型之间以及内置类型和自定义类型之间的6种相互转换。 内置类型之间内置类型之间转换的安全性取决于类型所占空间大小。理论上来说，从所占空间更小的类型转换到所占空间">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '5.1.4',
+    sidebar: {"position":"right","display":"post","offset":12,"b2t":true,"scrollpercent":true,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://racla.github.io/《Effective-C-》阅读总结-类型转换/">
+
+
+
+
+
+  <title>《Effective C++》阅读总结-类型转换 | Racla's Blog</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope="" itemtype="http://schema.org/WebPage" lang="en">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-right page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Racla's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">Go for it.</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
+            
+            About
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            Tags
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            Categories
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            Archives
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://racla.github.io/《Effective-C-》阅读总结-类型转换/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Wan">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Racla's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">《Effective C++》阅读总结-类型转换</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2020-05-12T21:57:54+08:00">
+                2020-05-12
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
+                  <a href="/categories/C/" itemprop="url" rel="index">
+                    <span itemprop="name">C++</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><p>本文涉及以下条款：</p>
+<ul>
+<li>E116: 尽量少做转型动作</li>
+<li>M2: 最好使用C++转型操作符</li>
+<li>M5: 对定制的“类型转换函数”保持警觉</li>
+</ul>
+<p>C++中的类型可以分为两大类：1)内置类型 和 2)自定义类型。类型转换涉及到不同内置类型之间，不同自定义类型之间以及内置类型和自定义类型之间的6种相互转换。</p>
+<h3 id="内置类型之间"><a href="#内置类型之间" class="headerlink" title="内置类型之间"></a>内置类型之间</h3><p>内置类型之间转换的安全性取决于类型所占空间大小。理论上来说，从所占空间更小的类型转换到所占空间相同或者更大的类型是类型安全的，不会有信息损失(浮点类型除外，其由于自身表述的问题不可避免地存在精度损失)，相反则会损失部分信息。例如从<code>int</code>到<code>double</code>,从<code>float</code>到<code>double</code>无精度损失，相反存在精度损失，如下例所示：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line">#include &lt;iostream&gt;</span><br><span class="line"></span><br><span class="line">using namespace std;</span><br><span class="line"></span><br><span class="line">int main()</span><br><span class="line">&#123;</span><br><span class="line">   /*int to double*/</span><br><span class="line">   int a = 10;</span><br><span class="line">   double b = a;</span><br><span class="line">   cout &lt;&lt; b &lt;&lt; endl; // 10  无精度损失</span><br><span class="line">   </span><br><span class="line">   /*double to int*/</span><br><span class="line">   double c = 0.3213;</span><br><span class="line">   int d = double(c);</span><br><span class="line">   cout &lt;&lt; d &lt;&lt; endl; // 0  精度损失了(*)</span><br><span class="line">   </span><br><span class="line">   /*float to double*/</span><br><span class="line">   float e = 0.0123456789;</span><br><span class="line">   double f = e;</span><br><span class="line">   cout.precision(10);</span><br><span class="line">   cout &lt;&lt; e &lt;&lt;endl; // 0.0123456791 float由于精度限制有效位在小数点后第8位</span><br><span class="line">   cout &lt;&lt; f &lt;&lt;endl; // 0.0123456791 没有精度损失 (*)</span><br><span class="line">   /*double to float*/</span><br><span class="line">   double g = 0.01234567890123456789;</span><br><span class="line">   float h = g;</span><br><span class="line">   cout.precision(20);</span><br><span class="line">   cout &lt;&lt; g &lt;&lt;endl; // 0.012345678901234568431 double由于精度限制有效位在小数点后第17位</span><br><span class="line">   cout &lt;&lt; h &lt;&lt;endl; // 0.012345679104328155518 精度损失了，第8位开始不一致 (*)</span><br><span class="line">   return 0;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>上例还表明，<strong>内置类型之间的相互转换是隐式的，可以由编译器完成</strong>。我们也可以用C++类型转换操作符 <code>static_cast</code>完成隐式转换，它的优点在于容易辨识出代码中类型被破坏的地方。</p>
+<h3 id="内置类型和自定义类型之间"><a href="#内置类型和自定义类型之间" class="headerlink" title="内置类型和自定义类型之间"></a>内置类型和自定义类型之间</h3><p>内置类型通过构造函数转换为自定义类型，而自定义类型可以通过成员函数转换为自定义类型。考虑以下代码：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">#include &lt;iostream&gt;</span><br><span class="line"></span><br><span class="line">using namespace std;</span><br><span class="line">class Integer&#123;</span><br><span class="line">private:</span><br><span class="line">    int number;</span><br><span class="line">public:</span><br><span class="line">    /*constructor*/</span><br><span class="line">    Integer(int num):number(num)&#123;&#125;;</span><br><span class="line">    </span><br><span class="line">    /*member function*/</span><br><span class="line">    operator int() const&#123;</span><br><span class="line">        return number;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line">int main()</span><br><span class="line">&#123;</span><br><span class="line">    Integer n = 1;</span><br><span class="line">    cout &lt;&lt; n &lt;&lt; endl; // output: 1</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>示例中，我们声明了一个包装类<code>Integer</code>保存<code>int</code>，<code>int</code>到<code>Integer</code>的转换是隐式的，由构造函数完成，<code>Integer</code>到<code>int</code>的转换也是隐式的，因此我们可以像操作内置类型一样在<code>int</code>和<code>Integer</code>之间无缝切换。这种隐式转换的写法给用户带来了极大的便利，但是也让用户的错误难以被发现。</p>
+<p>条款M5给出了两个隐式转换可能给用户带来的麻烦。</p>
+<p>第一个例子上面的代码已经展示，我们在没有为<code>Integer</code>重载<code>&lt;&lt;</code>操作符的情况下却成功调用了，这归功于编译器为我们调用<code>int()</code>函数将<code>Integer</code>类型转为了<code>int</code>类型，但是有时候这并不是我们想要的，例如我们声明了一个有理数类<code>Rational</code>，它重载了<code>double</code>类型转换操作符，但是我们想让它输出分数形式的有理数，如果我们在操作符<code>&lt;&lt;</code>后面直接跟<code>Rational</code>类型的对象，它会被转换为<code>double</code>类型输出，这不是我们想要的。如果我们不重载类型转换操作符，编译器便会提醒我们没有重载<code>&lt;&lt;</code>操作符，这是我们期待的行为。这个例子实际上解释的并不是很令人信服，我的看法是不重载类型转换操作符，而使用显式接口如<code>asDouble()</code>,<code>asInt()</code>可以提醒类型的使用者，我们在进行类型转换，需要在后续代码中仔细处理。将<code>Integer</code>类的类型转换操作符<code>int</code>改为显示的接口为<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">#include &lt;iostream&gt;</span><br><span class="line"></span><br><span class="line">using namespace std;</span><br><span class="line">class Integer&#123;</span><br><span class="line">private:</span><br><span class="line">    int number;</span><br><span class="line">public:</span><br><span class="line">    /*constructor*/</span><br><span class="line">    Integer(int num):number(num)&#123;&#125;;</span><br><span class="line">    </span><br><span class="line">    /*member function*/</span><br><span class="line">    int asInt() const&#123;</span><br><span class="line">        return number;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line">int main()</span><br><span class="line">&#123;</span><br><span class="line">    Integer n = 1;</span><br><span class="line">    cout &lt;&lt; n.asInt() &lt;&lt; endl; // output: 1</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>第二个例子是构造函数引发的隐式转换存在的问题，考虑如下代码：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">template&lt;class T&gt;</span><br><span class="line">class Array</span><br><span class="line">&#123;</span><br><span class="line">public:</span><br><span class="line">    Array(int size);</span><br><span class="line">    ...</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">int main()&#123;</span><br><span class="line">    Array&lt;int&gt; a,b;</span><br><span class="line">    ...</span><br><span class="line">    for(int i = 0 ; i &lt; 10; i++)</span><br><span class="line">    &#123;</span><br><span class="line">        if(a == b[i])      // 书写错误，但编译器并不会报错！(*)</span><br><span class="line">            ...</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>我们想遍历两个<code>Array</code>容器中每个元素，但是<code>(*)</code>处漏写了<code>a</code>的下标，我们期待编译器可以发现这一错误，然而并没有，并且这一错误也很难被我们发现。问题出在编译器将整型的变量<code>b[i]</code>通过构造函数转换为了<code>Array&lt;int&gt;</code>类型的对象，然后再将这一临时对象与<code>a</code>进行比较。这显然与我们初衷相去甚远。解决方法是将构造函数用<code>explicit</code>修饰，编译器便不会进行隐式转换，此外也可以用代理类禁止此类行为。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">template&lt;class T&gt;</span><br><span class="line">class Array</span><br><span class="line">&#123;</span><br><span class="line">public:</span><br><span class="line">    explicit Array(int size); // 通过explicit禁止隐式转换</span><br><span class="line">    ...</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">int main()&#123;</span><br><span class="line">    Array&lt;int&gt; a,b;</span><br><span class="line">    ...</span><br><span class="line">    for(int i = 0 ; i &lt; 10; i++)</span><br><span class="line">    &#123;</span><br><span class="line">        if(a == b[i])      // 编译器报错！(*)</span><br><span class="line">            ...</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h3 id="自定义类型之间"><a href="#自定义类型之间" class="headerlink" title="自定义类型之间"></a>自定义类型之间</h3><p>两个没有继承关系的自定义类型之间的转换可以通过构造函数+成员函数进行相互转换，本节主要讨论在同一继承树下两个类型之间的转换。由于子类必然包含基类的信息，因此子类可以通过<strong>向上转换</strong> <em>隐式地</em> <em>安全</em> 转换为基类。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line">#include &lt;iostream&gt;</span><br><span class="line"></span><br><span class="line">using namespace std;</span><br><span class="line">class Base&#123;</span><br><span class="line">protected:</span><br><span class="line">    int a;</span><br><span class="line">public:</span><br><span class="line">    Base():a(1)&#123;&#125;;</span><br><span class="line">    virtual void print()&#123;</span><br><span class="line">        cout &lt;&lt; a &lt;&lt; endl;</span><br><span class="line">        cout &lt;&lt; &quot;parent class&quot; &lt;&lt; endl;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line">class Derived:public Base&#123;</span><br><span class="line">  public:</span><br><span class="line">    Derived()&#123;</span><br><span class="line">        a = 2;</span><br><span class="line">    &#125;;</span><br><span class="line">    virtual void print()&#123;</span><br><span class="line">        cout &lt;&lt; &quot;child class&quot; &lt;&lt; endl;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line">int main()</span><br><span class="line">&#123;</span><br><span class="line">    Derived child;</span><br><span class="line">    Base pb = child;</span><br><span class="line">    pb.print();</span><br><span class="line">    </span><br><span class="line">    Base* pb1 = &amp;child;</span><br><span class="line">    pb1-&gt;print();</span><br><span class="line"></span><br><span class="line">    /*</span><br><span class="line">    output:</span><br><span class="line">    2</span><br><span class="line">    parent class</span><br><span class="line">    child class</span><br><span class="line">    */</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>基类转换为子类只能通过<code>dynamic_cast</code>操作符完成，条款E27不建议我们使用该操作符，主要原因是该转换非常缓慢。我们可以使用其他方法达到<code>dynamic_cast</code>的相同目的: 1)直接使用子类，而不是基类指针，指向子类对象；2) 在基类中声明需要调用的子类接口，使用虚函数重载该接口。</p>
+<h3 id="其他转换"><a href="#其他转换" class="headerlink" title="其他转换"></a>其他转换</h3><p>C++提供了四种转型方法，上文中已经给出了<code>static_cast</code>和<code>dynamic_cast</code>两种类型转换， 这里完整地给出了所有转型方法。</p>
+<ul>
+<li><code>static_cast</code> 显式地调用隐式转换，作用在于提醒用户类型转换</li>
+<li><code>dynamic_cast</code> 基类转换为子类，应尽量避免使用，而用虚函数或者直接使用子类</li>
+<li><code>const_cast</code> 消除变量的常量性</li>
+<li><code>reinterpreter_cast</code> 低级转换，例如将int指针转换为int</li>
+</ul>
+<h3 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h3><ul>
+<li>内置类型的转换是隐式的，在程序中可以使用 <code>static_cast</code>提醒我们类型的转换</li>
+<li>内置类型和自定义类型之间通过<code>explicit</code>修饰的构造函数和成员函数接口互相转换</li>
+<li>子类转换为父类是隐式的，需要注意虚函数的变化，尽量不要使用<code>dynamic_cast</code>将父类转换为子类，而用虚函数或者直接使用子类代替。</li>
+</ul>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+      <div>
+        <ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>Post author:</strong>
+    Wan
+  </li>
+  <li class="post-copyright-link">
+    <strong>Post link:</strong>
+    <a href="https://racla.github.io/《Effective-C-》阅读总结-类型转换/" title="《Effective C++》阅读总结-类型转换">https://racla.github.io/《Effective-C-》阅读总结-类型转换/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>Copyright Notice: </strong>
+    All articles in this blog are licensed under <a href="https://creativecommons.org/licenses/by-nc-sa/3.0/" rel="external nofollow noopener noreferrer" target="_blank">CC BY-NC-SA 3.0</a> unless stating additionally.
+  </li>
+</ul>
+
+      </div>
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/C/" rel="tag"># C++</a>
+          
+            <a href="/tags/Type-Casting/" rel="tag"># Type Casting</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/《More-Effective-C-》阅读总结-缓式评估，超急评估/" rel="next" title="《More Effective C++》阅读总结 - 缓式评估，超急评估(M17, M18)">
+                <i class="fa fa-chevron-left"></i> 《More Effective C++》阅读总结 - 缓式评估，超急评估(M17, M18)
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+  <div id="gitalk-container"></div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/images/avatar.jpg" alt="Wan">
+            
+              <p class="site-author-name" itemprop="name">Wan</p>
+              <p class="site-description motion-element" itemprop="description">Professional Bathroom Singer</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">32</span>
+                  <span class="site-state-item-name">posts</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">7</span>
+                  <span class="site-state-item-name">categories</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">22</span>
+                  <span class="site-state-item-name">tags</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/racla" target="_blank" title="GitHub" rel="external nofollow noopener noreferrer">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="racle0704@foxmail.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://www.linkedin.com/in/wanyangyang" target="_blank" title="Linkedin" rel="external nofollow noopener noreferrer">
+                      
+                        <i class="fa fa-fw fa-linkedin"></i>Linkedin</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#内置类型之间"><span class="nav-number">2.</span> <span class="nav-text">内置类型之间</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#内置类型和自定义类型之间"><span class="nav-number">3.</span> <span class="nav-text">内置类型和自定义类型之间</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#自定义类型之间"><span class="nav-number">4.</span> <span class="nav-text">自定义类型之间</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#其他转换"><span class="nav-number">5.</span> <span class="nav-text">其他转换</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#小结"><span class="nav-number">6.</span> <span class="nav-text">小结</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+        <div class="back-to-top">
+          <i class="fa fa-arrow-up"></i>
+          
+            <span id="scrollpercent"><span>0</span>%</span>
+          
+        </div>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2019 &mdash; <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Wan</span>
+
+  
+</div>
+
+
+<div>
+    <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+    <span id="busuanzi_container_site_pv">PV:<span id="busuanzi_value_site_pv"></span></span>
+    <span class="post-meta-divider">|</span>
+    <span id="busuanzi_container_site_uv">Guests:<span id="busuanzi_value_site_uv"></span></span>
+    
+</div>
+
+
+
+  <div class="powered-by">Powered by <a class="theme-link" target="_blank" href="https://hexo.io" rel="external nofollow noopener noreferrer">Hexo</a></div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next" rel="external nofollow noopener noreferrer">NexT.Gemini</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
+
+  <script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+
+   <script type="text/javascript">
+        var gitalk = new Gitalk({
+          clientID: '5aaead67b0c79e48e34f',
+          clientSecret: 'db14b8441c1f8579c898e6c207a6e0c086bb3410',
+          repo: 'racla.github.io',
+          owner: 'racla',
+          admin: ['racla'],
+          id: location.pathname,
+          labels: ['Gitalk'],
+          perPage: 15,
+          pagerDirection: 'last',
+          createIssueManually: true,
+          distractionFreeMode: false,
+	  language: 'en'
+        })
+        gitalk.render('gitalk-container')           
+       </script>
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+  
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  
+
+
+  
+
+  
+  <script type="text/javascript" src="/js/src/exturl.js?v=5.1.4"></script>
+
+
+</body>
+</html>

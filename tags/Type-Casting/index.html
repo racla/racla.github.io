@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="dfs,">
+  <meta name="keywords" content="Hexo, NexT">
 
 
 
@@ -79,18 +79,16 @@
 
 
 
-<meta name="description" content="Intuition &amp;amp; AlgorithmNumbers 1-9 can be seen as candidates in the previous questions, the constraints of this question are:  We can only pick one number one time, but we can only pick k numbers. A">
-<meta name="keywords" content="dfs">
-<meta property="og:type" content="article">
-<meta property="og:title" content="216 Combination Sum III">
-<meta property="og:url" content="https://racla.github.io/216-Combination-Sum-III/index.html">
+<meta name="description" content="Professional Bathroom Singer">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Racla&#39;s Blog">
+<meta property="og:url" content="https://racla.github.io/tags/Type-Casting/index.html">
 <meta property="og:site_name" content="Racla&#39;s Blog">
-<meta property="og:description" content="Intuition &amp;amp; AlgorithmNumbers 1-9 can be seen as candidates in the previous questions, the constraints of this question are:  We can only pick one number one time, but we can only pick k numbers. A">
+<meta property="og:description" content="Professional Bathroom Singer">
 <meta property="og:locale" content="en">
-<meta property="og:updated_time" content="2020-05-03T06:14:50.672Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="216 Combination Sum III">
-<meta name="twitter:description" content="Intuition &amp;amp; AlgorithmNumbers 1-9 can be seen as candidates in the previous questions, the constraints of this question are:  We can only pick one number one time, but we can only pick k numbers. A">
+<meta name="twitter:title" content="Racla&#39;s Blog">
+<meta name="twitter:description" content="Professional Bathroom Singer">
 
 
 
@@ -120,13 +118,13 @@
 
 
 
-  <link rel="canonical" href="https://racla.github.io/216-Combination-Sum-III/">
+  <link rel="canonical" href="https://racla.github.io/tags/Type-Casting/">
 
 
 
 
 
-  <title>216 Combination Sum III | Racla's Blog</title>
+  <title>Tag: Type Casting | Racla's Blog</title>
   
 
 
@@ -145,7 +143,7 @@
     
   
 
-  <div class="container sidebar-position-right page-post-detail">
+  <div class="container sidebar-position-right ">
     <div class="headband"></div>
 
     <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
@@ -249,199 +247,52 @@
           <div id="content" class="content">
             
 
-  <div id="posts" class="posts-expand">
-    
+  
+  
+  
+  <div class="post-block tag">
 
-  
+    <div id="posts" class="posts-collapse">
+      <div class="collection-title">
+        <h1>Type Casting<small>Tag</small>
+        </h1>
+      </div>
 
-  
-  
-  
+      
+        
 
   <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://racla.github.io/216-Combination-Sum-III/">
+    <header class="post-header">
 
-    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Wan">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Racla's Blog">
-    </span>
-
-    
-      <header class="post-header">
-
+      <h2 class="post-title">
         
+            <a class="post-title-link" href="/《Effective-C-》阅读总结-类型转换/" itemprop="url">
+              
+                <span itemprop="name">《Effective C++》阅读总结-类型转换</span>
+              
+            </a>
         
-          <h1 class="post-title" itemprop="name headline">216 Combination Sum III</h1>
-        
+      </h2>
 
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-11-20T13:42:31+08:00">
-                2019-11-20
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category">
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">In</span>
-              
-              
-                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
-                  <a href="/categories/LeetCode/" itemprop="url" rel="index">
-                    <span itemprop="name">LeetCode</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        <h1 id="Intuition-amp-Algorithm"><a href="#Intuition-amp-Algorithm" class="headerlink" title="Intuition &amp; Algorithm"></a>Intuition &amp; Algorithm</h1><p>Numbers 1-9 can be seen as candidates in the previous questions, the constraints of this question are:</p>
-<ol>
-<li>We can only pick one number one time, but we can only pick <code>k</code> numbers.</li>
-<li>All numbers are unique</li>
-</ol>
-<p>Actually,  this question is much easier than before since numbers are unique and we can only pick one number one time. If we pick these numbers by ascending order, there will be no duplicates. We only need to record the depth of the path in dfs, ensuring it no more than <code>k</code>.</p>
-<h1 id="Code"><a href="#Code" class="headerlink" title="Code"></a>Code</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">class Solution &#123;</span><br><span class="line">    List&lt;Integer&gt; path = new LinkedList&lt;&gt;();</span><br><span class="line">    List&lt;List&lt;Integer&gt;&gt; ans = new LinkedList&lt;&gt;();</span><br><span class="line">    public List&lt;List&lt;Integer&gt;&gt; combinationSum3(int k, int n) &#123;</span><br><span class="line">        if(k &gt; 9 || n &lt;= 0)</span><br><span class="line">            return ans;</span><br><span class="line">        dfs(k, n, 1);</span><br><span class="line">        return ans;</span><br><span class="line">    &#125;</span><br><span class="line">    private void dfs(int k, int n , int c)&#123;</span><br><span class="line">        if(k==0 &amp;&amp; n==0)&#123;</span><br><span class="line">            ans.add(new ArrayList&lt;Integer&gt;(path));</span><br><span class="line">            return;</span><br><span class="line">        &#125;</span><br><span class="line">        if(k==0 || n&lt;=0 || c&gt;9)</span><br><span class="line">        &#123;</span><br><span class="line">            return;</span><br><span class="line">        &#125;</span><br><span class="line">        for(int i = c; i &lt; 10; i++)&#123;</span><br><span class="line">            path.add(i);</span><br><span class="line">            dfs(k-1, n-i, i+1);</span><br><span class="line">            path.remove(path.size()-1);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h1 id="Complexity"><a href="#Complexity" class="headerlink" title="Complexity"></a>Complexity</h1><p><strong>Time Complexity:</strong> $O(9^k)$</p>
-<p><strong>Space Complexity:</strong> $O(km)$ where m is the number of solutions, it’s a math problem and I’m not sure what it is. </p>
-
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-      <div>
-        <ul class="post-copyright">
-  <li class="post-copyright-author">
-    <strong>Post author:</strong>
-    Wan
-  </li>
-  <li class="post-copyright-link">
-    <strong>Post link:</strong>
-    <a href="https://racla.github.io/216-Combination-Sum-III/" title="216 Combination Sum III">https://racla.github.io/216-Combination-Sum-III/</a>
-  </li>
-  <li class="post-copyright-license">
-    <strong>Copyright Notice: </strong>
-    All articles in this blog are licensed under <a href="https://creativecommons.org/licenses/by-nc-sa/3.0/" rel="external nofollow noopener noreferrer" target="_blank">CC BY-NC-SA 3.0</a> unless stating additionally.
-  </li>
-</ul>
-
+      <div class="post-meta">
+        <time class="post-time" itemprop="dateCreated" datetime="2020-05-12T21:57:54+08:00" content="2020-05-12">
+          05-12
+        </time>
       </div>
-    
 
-    <footer class="post-footer">
-      
-        <div class="post-tags">
-          
-            <a href="/tags/dfs/" rel="tag"># dfs</a>
-          
-        </div>
-      
-
-      
-      
-      
-
-      
-        <div class="post-nav">
-          <div class="post-nav-next post-nav-item">
-            
-              <a href="/40-Combination-Sum-II/" rel="next" title="40 Combination Sum II">
-                <i class="fa fa-chevron-left"></i> 40 Combination Sum II
-              </a>
-            
-          </div>
-
-          <span class="post-nav-divider"></span>
-
-          <div class="post-nav-prev post-nav-item">
-            
-              <a href="/377-Combination-Sum-IV/" rel="prev" title="377 Combination Sum IV">
-                377 Combination Sum IV <i class="fa fa-chevron-right"></i>
-              </a>
-            
-          </div>
-        </div>
-      
-
-      
-      
-    </footer>
-  </div>
-  
-  
-  
+    </header>
   </article>
 
 
-
-    <div class="post-spread">
       
     </div>
+
   </div>
+  
+  
+  
+
+  
 
 
           </div>
@@ -449,13 +300,6 @@
 
 
           
-
-  
-  <div id="gitalk-container"></div>
-
-  
-
-
 
         </div>
         
@@ -476,17 +320,8 @@
       
 
       
-        <ul class="sidebar-nav motion-element">
-          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
-            Table of Contents
-          </li>
-          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
-            Overview
-          </li>
-        </ul>
-      
 
-      <section class="site-overview-wrap sidebar-panel">
+      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
             
@@ -570,22 +405,6 @@
         </div>
       </section>
 
-      
-      <!--noindex-->
-        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
-          <div class="post-toc">
-
-            
-              
-            
-
-            
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Intuition-amp-Algorithm"><span class="nav-number">1.</span> <span class="nav-text">Intuition &amp; Algorithm</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Code"><span class="nav-number">2.</span> <span class="nav-text">Code</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Complexity"><span class="nav-number">3.</span> <span class="nav-text">Complexity</span></a></li></ol></div>
-            
-
-          </div>
-        </section>
-      <!--/noindex-->
       
 
       
@@ -739,10 +558,6 @@
 
 
   
-  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
-<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
-
-
 
   
 
@@ -783,29 +598,6 @@
 
 
 
-
-
-  <link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
-
-  <script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
-
-   <script type="text/javascript">
-        var gitalk = new Gitalk({
-          clientID: '5aaead67b0c79e48e34f',
-          clientSecret: 'db14b8441c1f8579c898e6c207a6e0c086bb3410',
-          repo: 'racla.github.io',
-          owner: 'racla',
-          admin: ['racla'],
-          id: location.pathname,
-          labels: ['Gitalk'],
-          perPage: 15,
-          pagerDirection: 'last',
-          createIssueManually: true,
-          distractionFreeMode: false,
-	  language: 'en'
-        })
-        gitalk.render('gitalk-container')           
-       </script>
 
 
 
